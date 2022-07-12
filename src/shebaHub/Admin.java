@@ -1,4 +1,4 @@
 package shebaHub;
 
-public class Admin {
+public class Admin extends Role{
 }
