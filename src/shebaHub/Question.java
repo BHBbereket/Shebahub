@@ -2,8 +2,9 @@ package shebaHub;
 
 import java.util.List;
 
-public class Qiuestion extends Post{
+public class Question extends Post{
     private List<Cotegory> cotegories;
+    private List<Answer> answers;
 
     public List<Cotegory> getCotegories() {
         return cotegories;
@@ -13,7 +14,7 @@ public class Qiuestion extends Post{
         this.cotegories = cotegories;
     }
 
-    public Qiuestion(List<Cotegory> cotegories) {
+    public Question(List<Cotegory> cotegories) {
         this.cotegories = cotegories;
     }
 }

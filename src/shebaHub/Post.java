@@ -9,7 +9,6 @@ public abstract class Post {
     private LocalDateTime postedDate;
     private User user;
     private List<Vote> votes;
-
     public Long getPostId() {
         return postId;
     }

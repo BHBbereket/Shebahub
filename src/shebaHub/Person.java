@@ -9,6 +9,15 @@ public class Person {
     private String email;
     private String username;
     private List<Role> roles;
+    private Address address;
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public List<Role> getRoles() {
         return roles;
