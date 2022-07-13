@@ -1,6 +1,6 @@
-package shebaHub;
+package shebaHub.main;
 
-public enum Cotegory {
+public enum Category {
     MATHEMATICS,
     BIOLOGY,
     COMPUTER,

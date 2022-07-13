@@ -1,4 +1,4 @@
-package shebaHub;
+package shebaHub.main;
 
 public class Main {
 

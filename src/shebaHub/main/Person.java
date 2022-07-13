@@ -1,33 +1,33 @@
-package shebaHub;
+package shebaHub.main;
 
 import java.util.List;
 
 public class Person {
-    private long id;
+    private Address address;
+    private long personId;
     private String firstName;
     private String lastName;
     private String email;
     private String username;
     private List<Role> roles;
 
-    public List<Role> getRoles() {
-        return roles;
+    public Person() {
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public Address getAddress() {
+        return address;
     }
 
-    public Person(){
-
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
-    public long getId() {
-        return id;
+    public long getPersonId() {
+        return personId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setPersonId(long personId) {
+        this.personId = personId;
     }
 
     public String getFirstName() {
@@ -62,11 +62,11 @@ public class Person {
         this.username = username;
     }
 
-    public Person(long id, String firstName, String lastName, String email, String username) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.username = username;
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

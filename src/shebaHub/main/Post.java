@@ -1,11 +1,11 @@
-package shebaHub;
+package shebaHub.main;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public abstract class Post {
     private Long postId;
-    private String Content;
+    private String content;
     private LocalDateTime postedDate;
     private User user;
     private List<Vote> votes;
@@ -19,11 +19,11 @@ public abstract class Post {
     }
 
     public String getContent() {
-        return Content;
+        return content;
     }
 
     public void setContent(String content) {
-        Content = content;
+        this.content = content;
     }
 
     public LocalDateTime getPostedDate() {
