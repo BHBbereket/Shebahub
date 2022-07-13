@@ -2,7 +2,7 @@ package shebaHub;
 
 import java.util.List;
 
-public class Qiuestion extends Post{
+public class Question extends Post{
     private List<Cotegory> cotegories;
 
     public List<Cotegory> getCotegories() {
@@ -13,7 +13,7 @@ public class Qiuestion extends Post{
         this.cotegories = cotegories;
     }
 
-    public Qiuestion(List<Cotegory> cotegories) {
+    public Question(List<Cotegory> cotegories) {
         this.cotegories = cotegories;
     }
 }

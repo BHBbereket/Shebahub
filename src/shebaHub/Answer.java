@@ -3,15 +3,15 @@ package shebaHub;
 import java.util.List;
 
 public class Answer extends Post{
-    private Qiuestion qutionn;
+    private Question question;
     private List<Vote> votes;
 
-    public Qiuestion getQutionn() {
-        return qutionn;
+    public Question getQuestion() {
+        return question;
     }
 
-    public void setQutionn(Qiuestion qutionn) {
-        this.qutionn = qutionn;
+    public void setQuestion(Question question) {
+        this.question = question;
     }
 
     public List<Vote> getVotes() {
@@ -22,8 +22,8 @@ public class Answer extends Post{
         this.votes = votes;
     }
 
-    public Answer(Qiuestion qutionn, List<Vote> votes) {
-        this.qutionn = qutionn;
+    public Answer(Question question, List<Vote> votes) {
+        this.question = question;
         this.votes = votes;
     }
 }
