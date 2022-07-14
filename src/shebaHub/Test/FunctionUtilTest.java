@@ -1,14 +1,14 @@
 package shebaHub.Test;
 
 
+import org.junit.Assert;
+import org.junit.Test;
 import shebaHub.main.*;
 import org.junit.Before;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
+import java.util.function.Function;
 
 public class FunctionUtilTest {
     /**
@@ -35,7 +35,7 @@ public class FunctionUtilTest {
     Question question1,question2,question3,question4,question5;
     Answer answer1,answer2,answer3,answer4,answer5,answer6,answer7;
 
-    Vote vote1,vote2,vote3,vote4,vote5,vote6,vote7,vote8,vote9,vote10;
+//    Vote vote1,vote2,vote3,vote4,vote5,vote6,vote7,vote8,vote9,vote10;
 
     @Before
     public void setUp(){
@@ -56,6 +56,7 @@ public class FunctionUtilTest {
                 "ashenafi@gmail.com",
                 "ashuchi"
         );
+
         ashu.getPerson().setAddress(addresses.get(0));
         yemane = TestFactory.createUser(
                 2L,
@@ -82,8 +83,14 @@ public class FunctionUtilTest {
                 "jerry@gmail.com",
                 "jerrayney"
         );
+
         jerry.getPerson().setAddress(addresses.get(3));
 
+        users = new ArrayList<>(
+                Arrays.asList(
+                        ashu,yemane,jerry,beki
+                )
+        );
 
         for (int i = 0; i < 100; i++) {
             User  user = TestFactory.createUser(
@@ -101,13 +108,13 @@ public class FunctionUtilTest {
         //create admin
 
         //TODO create question
-        question1 = TestFactory.createQuestion(1L,"What is question 1", LocalDateTime.now().minusYears(2L),ashu);
+        question1 = TestFactory.createQuestion(1L,"What is question 1", LocalDateTime.now().minusYears(1L),ashu);
         List<Category> categories1 = new ArrayList<>();
         categories1.add(Category.BIOLOGY);
         categories1.add(Category.CHEMISTRY);
         question1.setCategories(categories1);
 
-        question2 = TestFactory.createQuestion(2L,"What is question 2", LocalDateTime.now().minusYears(3L),jerry);
+        question2 = TestFactory.createQuestion(2L,"What is question 2", LocalDateTime.now().minusYears(1L),jerry);
         List<Category> categories2 = new ArrayList<>();
         categories2.add(Category.MATHEMATICS);
         categories2.add(Category.COMPUTER);
@@ -120,19 +127,52 @@ public class FunctionUtilTest {
         categories3.add(Category.HISTORY);
         question3.setCategories(categories1);
 
-        question4 = TestFactory.createQuestion(4L,"What is question 4", LocalDateTime.now().minusYears(4L),ashu);
+        question4 = TestFactory.createQuestion(4L,"What is question 4", LocalDateTime.now().minusYears(1L),beki);
         List<Category> categories4 = new ArrayList<>();
         categories4.add(Category.MATHEMATICS);
         categories4.add(Category.PHYSICS);
         question4.setCategories(categories1);
 
-        question5 = TestFactory.createQuestion(5L,"What is question 5", LocalDateTime.now(),jerry);
+        question5 = TestFactory.createQuestion(5L,"What is question 5", LocalDateTime.now().minusYears(1L),yemane);
         List<Category> categories5 = new ArrayList<>();
         categories5.add(Category.PHYSICS);
         categories5.add(Category.GEOGRAHY);
         question5.setCategories(categories1);
 
 
+//        Answer answer1,answer2,answer3,answer4,answer5,answer6,answer7;
+
+        answer1 = TestFactory.createAnswer(1L,"this is answer 1",LocalDateTime.now().minusYears(1),yemane,question1);
+        answer2 = TestFactory.createAnswer(1L,"this is answer 2",LocalDateTime.now().minusYears(1),beki,question1);
+        answer3 = TestFactory.createAnswer(1L,"this is answer 3",LocalDateTime.now().minusYears(1),beki,question2);
+        answer4 = TestFactory.createAnswer(1L,"this is answer 4",LocalDateTime.now().minusYears(1),yemane,question3);
+        answer5 = TestFactory.createAnswer(1L,"this is answer 5",LocalDateTime.now().minusYears(1),beki,question4);
+        answer6 = TestFactory.createAnswer(1L,"this is answer 6",LocalDateTime.now().minusYears(1),yemane,question5);
+        answer7 = TestFactory.createAnswer(1L,"this is answer 7",LocalDateTime.now().minusYears(1),yemane,question4);
+
+        List<Answer> question1Answers = new ArrayList<>(
+                Arrays.asList(answer1,answer2)
+        );
+        question1.setAnswers(question1Answers);
+
+        List<Answer> question2Answers = new ArrayList<>(
+                Arrays.asList(answer3)
+        );
+        question2.setAnswers(question2Answers);
+
+        List<Answer> question3Answers = new ArrayList<>(
+                Arrays.asList(answer4)
+        );
+        question3.setAnswers(question3Answers);
+
+        List<Answer> question4Answers = new ArrayList<>(
+                Arrays.asList(answer5,answer7)
+        );
+        question4.setAnswers(question4Answers);
+        List<Answer> question5Answers = new ArrayList<>(
+                Arrays.asList(answer6)
+        );
+        question5.setAnswers(question5Answers);
 
         //create vote
         List<Vote> question1Votes = new ArrayList<>();
@@ -159,7 +199,7 @@ public class FunctionUtilTest {
         }
 
         List<Vote> question5Votes = new ArrayList<>();
-        for (int i = 240; i < 330; i++) {
+        for (int i = 240; i < 340; i++) {
             Vote vote = TestFactory.createVote(Long.valueOf(i),voters.get(i-240),question5);
             question5Votes.add(vote);
         }
@@ -199,7 +239,7 @@ public class FunctionUtilTest {
         }
         List<Vote> answer7Votes = new ArrayList<>();
         for (int i = 480; i < 500; i++) {
-            Vote vote = TestFactory.createVote((long) i,voters.get(i-330),answer7);
+            Vote vote = TestFactory.createVote((long) i,voters.get(i-480),answer7);
             answer7Votes.add(vote);
         }
 
@@ -209,6 +249,11 @@ public class FunctionUtilTest {
         question3.setVotes(question3Votes);
         question4.setVotes(question4Votes);
         question5.setVotes(question5Votes);
+        questions = new ArrayList<>(
+                Arrays.asList(
+                        question1,question2,question3,question4,question5
+                )
+        );
 
 
 
@@ -222,22 +267,21 @@ public class FunctionUtilTest {
         answer6.setVotes(answer6Votes);
         answer7.setVotes(answer7Votes);
 
+        answers = new ArrayList<>(
+                Arrays.asList(
+                        answer1,answer2,answer3,answer4,answer5,answer6,answer7)
+        );
+
+
+
         //TODO create answer
 
 
 
-//        Answer answer1,answer2,answer3,answer4,answer5,answer6,answer7;
-
-        answer1 = TestFactory.createAnswer(1L,"this is answer 1",LocalDateTime.now().minusYears(1),yemane,question1);
-        answer2 = TestFactory.createAnswer(1L,"this is answer 2",LocalDateTime.now().minusYears(1),beki,question1);
-        answer3 = TestFactory.createAnswer(1L,"this is answer 3",LocalDateTime.now().minusYears(1),beki,question2);
-        answer4 = TestFactory.createAnswer(1L,"this is answer 1",LocalDateTime.now().minusYears(1),yemane,question3);
-        answer5 = TestFactory.createAnswer(1L,"this is answer 1",LocalDateTime.now().minusYears(1),beki,question4);
-        answer6 = TestFactory.createAnswer(1L,"this is answer 1",LocalDateTime.now().minusYears(1),yemane,question5);
-        answer7 = TestFactory.createAnswer(1L,"this is answer 1",LocalDateTime.now().minusYears(1),yemane,question4);
-
+//
 
         //TODO CREATE VOTE
+
 
 
 
@@ -250,8 +294,39 @@ public class FunctionUtilTest {
     }
 
 
+    @Test
+    public void testTopKHighRatedQuestionInGivenYear(){
+        List<String> res = FunctionUtil.topKHighRatedQuestionInGivenYear.apply(questions,2021L,2,Category.BIOLOGY);
+        List<String> expected = new ArrayList<>(
+                Arrays.asList("Yemane","Ashenafi")
+        );
+        Assert.assertEquals(res,expected);
+    }
 
+    @Test
+    public void testTopKHighRatedAnswersInGivenYear(){
 
+    }
+
+    @Test
+    public void testTopQuestionProvidersInCategory(){
+
+    }
+
+    @Test
+    public void testTopCategoryOfYear(){
+
+    }
+
+    @Test
+    public void testTopAnswererOfAYear(){
+
+    }
+
+    @Test
+    public void testTopKQuestionsWithHighestAnswers(){
+
+    }
 
 
 

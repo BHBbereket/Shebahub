@@ -1,5 +1,6 @@
 package shebaHub.main;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Person {
@@ -21,7 +22,7 @@ public class Person {
         this.lastName = lastName;
         this.email = email;
         this.username = username;
-        this.roles = roles;
+        this.roles = new ArrayList<>();
     }
     public static Person getInstance(long personId, String firstName, String lastName, String email, String username) {
         return new Person(personId, firstName, lastName, email, username);
