@@ -5,6 +5,12 @@ public class Vote {
     private User user;
     private Post post;
 
+    public Vote(Long voteId, User user, Post post) {
+        this.voteId = voteId;
+        this.user = user;
+        this.post = post;
+    }
+
     public Long getVoteId() {
         return voteId;
     }

@@ -1,43 +1,15 @@
 package shebaHub.main;
 
+import java.util.List;
+
 public class User extends Role{
-    private Long id;
-    private String fistName;
-    private String lastName;
-    private String email;
+    List<Post> posts;
 
-    public User() {
+    public List<Post> getPosts() {
+        return posts;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFistName() {
-        return fistName;
-    }
-
-    public void setFistName(String fistName) {
-        this.fistName = fistName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 }

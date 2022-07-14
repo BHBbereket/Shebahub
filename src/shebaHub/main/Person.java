@@ -11,9 +11,22 @@ public class Person {
     private String username;
     private List<Role> roles;
 
-    public Person() {
+    private Person() {
     }
 
+    private Person( long personId, String firstName, String lastName, String email, String username) {
+
+        this.personId = personId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.username = username;
+        this.roles = roles;
+    }
+    public static Person getInstance(long personId, String firstName, String lastName, String email, String username) {
+        return new Person(personId, firstName, lastName, email, username);
+
+    }
     public Address getAddress() {
         return address;
     }

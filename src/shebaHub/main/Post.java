@@ -10,6 +10,14 @@ public abstract class Post {
     private User user;
     private List<Vote> votes;
 
+    public Post(Long postId, String content, LocalDateTime postedDate, User user) {
+        this.postId = postId;
+        this.content = content;
+        this.postedDate = postedDate;
+        this.user = user;
+
+    }
+
     public Long getPostId() {
         return postId;
     }
