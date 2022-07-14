@@ -131,11 +131,12 @@ public abstract class FunctionUtil {
                     .limit(k)
                     .collect(toList());
 
-    static TriFunction<List<Person>, Month,String, Optional<String>> getQuestionWithMostRatedAnswerGivenMonthAndCity=(person, month, city)->
+    static QuadFunction<List<Person>,Long,Long,String, Optional<String>> getQuestionWithMostRatedAnswerGivenYearAndCity=(person, year,month, city)->
             personToUser.apply(person).stream()
                     .flatMap(user -> postToAnswer.apply(user.getPosts()).stream())
                     .filter(answer -> answer.getUser().getPerson().getAddress().equals(city) )
-                    .filter(answer -> answer.getPostedDate().getMonth().equals(month))
+                    .filter(answer -> answer.getPostedDate().getMonthValue()==(month))
+                    .filter(answer -> answer.getPostedDate().getYear()==(year))
                     .collect(Collectors.toMap(Answer::getQuestion,answer -> (long) answer.getVotes().size()))
                     .entrySet().stream()
                     .sorted((p1,p2)->(int)(p2.getValue()- p1.getValue()))
