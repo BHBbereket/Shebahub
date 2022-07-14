@@ -9,6 +9,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 public abstract class FunctionUtil {
 
 
@@ -17,7 +19,7 @@ public abstract class FunctionUtil {
                     .flatMap(user -> user.getPosts().stream())
                     .filter(post -> post instanceof  Question)
                     .map(post -> (Question)post)
-                    .collect(Collectors.toList());
+                    .collect(toList());
 
 
 
@@ -26,7 +28,7 @@ public abstract class FunctionUtil {
                     .flatMap(user -> user.getPosts().stream())
                     .filter(post -> post instanceof  Answer)
                     .map(post -> (Answer)post)
-                    .collect(Collectors.toList());
+                    .collect(toList());
 
 
     public static QuadFunction<List<Question>,Long , Integer,Category, List<String>> topKHighRatedQuestionInGivenYear =
@@ -37,7 +39,7 @@ public abstract class FunctionUtil {
                             .sorted((question1,question2)->(int)(question2.getVotes().size()-question1.getVotes().size()))
                             .limit(limit)
                             .map(question -> question.getUser().getPerson().getFirstName())
-                            .collect(Collectors.toList());
+                            .collect(toList());
     public static QuadFunction<List<Answer>,Long , Integer,Category, List<String>> topKHighRatedAnswersInGivenYear =
             (answers,year,limit,category) ->
                     answers.stream()
@@ -46,7 +48,7 @@ public abstract class FunctionUtil {
                             .sorted((answer1,answer2)->(int)(answer2.getVotes().size()-answer1.getVotes().size()))
                             .limit(limit)
                             .map(answer -> answer.getUser().getPerson().getFirstName())
-                            .collect(Collectors.toList());
+                            .collect(toList());
 
     public static BiFunction<List<Question>,Category,List<String>> topQuestionProvidersInCategory =
         (questions, category) -> questions.stream()
@@ -55,7 +57,7 @@ public abstract class FunctionUtil {
                 .entrySet().stream()
                 .sorted((u1,u2) -> (int)(u2.getValue()- u1.getValue()))
                 .map(userQuestionCount ->userQuestionCount.getKey().getPerson().getEmail() )
-                .collect(Collectors.toList());
+                .collect(toList());
 
 
 
@@ -88,7 +90,7 @@ public abstract class FunctionUtil {
                             .sorted((q1,q2) -> (int)(q2.getValue() - q1.getValue()))
                             .map(questionLongEntry -> questionLongEntry.getKey())
                             .limit(k)
-                            .collect(Collectors.toList());
+                            .collect(toList());
 
 
     /**
@@ -100,7 +102,7 @@ public abstract class FunctionUtil {
                     .flatMap(person -> person.getRoles().stream())
                     .filter(role -> role instanceof User)
                     .map(role -> (User) role)
-                    .collect(Collectors.toList());
+                    .collect(toList());
 
 //    static Function<List<User>,List<Question>> userToQuestion=
 //            users -> users.stream()
@@ -112,32 +114,34 @@ public abstract class FunctionUtil {
     static Function<List<Post>,List<Answer>> postToAnswer=posts -> posts.stream()
             .filter(post -> post instanceof Answer)
             .map(post -> (Answer) post)
-            .collect(Collectors.toList());
+            .collect(toList());
 
     static Function<List<Post>,List<Question>> postToQuestion=posts -> posts.stream()
             .filter(post -> post instanceof Question)
             .map(post -> (Question) post)
-            .collect(Collectors.toList());
+            .collect(toList());
 
 
-    static TriFunction<List<Person>,String,Long, List<Answer>> firstKAnswersForGivenQuestion=
+    static TriFunction<List<Person>,Long,Long, List<Answer>> firstKAnswersForGivenQuestion=
             (person,questionId,k) -> personToUser.apply(person).stream()
                     .flatMap(user -> userToQuestion.apply(personToUser.apply(person)).stream())
                     .filter(question -> question.getPostId().equals(questionId))
                     .flatMap(question -> question.getAnswers().stream())
                     .sorted(Comparator.comparing(Post::getPostedDate))
                     .limit(k)
-                    .collect(Collectors.toList());
+                    .collect(toList());
 
-
-    static TriFunction<List<Person>,Integer,String,String> getMostRatedQuestionGivenMonthAndCity=(person,month,city)->
+    static TriFunction<List<Person>, Month,String, Optional<String>> getMostRatedAnswerGivenMonthAndCity=(person, month, city)->
             personToUser.apply(person).stream()
                     .flatMap(user -> postToAnswer.apply(user.getPosts()).stream())
-                    .filter(answer -> answer.getUser().getPerson().getAddress().equals(city) && answer.getPostedDate().getMonth().equals(month))
-                    .collect(Collectors.toMap(Answer::getQuestion,answer -> answer.getVotes().stream().count()))
+                    .filter(answer -> answer.getUser().getPerson().getAddress().equals(city) )
+                    .filter(answer -> answer.getPostedDate().getMonth().equals(month))
+                    .collect(Collectors.toMap(Answer::getQuestion,answer -> (long) answer.getVotes().size()))
                     .entrySet().stream()
                     .sorted((p1,p2)->(int)(p2.getValue()- p1.getValue()))
-                    .findFirst().map(q->q.getKey()).toString();
+                    .findFirst()
+                    .map(q->q.getKey().getContent());
+
 
 
 
@@ -174,7 +178,7 @@ public abstract class FunctionUtil {
                     .entrySet().stream()
                     .sorted((c,c2)->(int)(c2.getValue()-c.getValue()))
                     .map(userLongEntry -> userLongEntry.getKey().getPerson().getFirstName())
-                    .collect(Collectors.toList());
+                    .collect(toList());
     static Function<List<Post>,Long> getTotalNumber=posts ->
             posts.stream().count();
 
@@ -186,7 +190,7 @@ public abstract class FunctionUtil {
                     .sorted((p1,p2)->(int) (p2.getValue()-p1.getValue()))
                     .limit(k)
                     .map(stringLongEntry -> stringLongEntry.getKey())
-                    .collect(Collectors.toList());
+                    .collect(toList());
     static BiFunction<List<Person>,Integer,String> getMostUpVotedSolutionInAMonth=(person,month)->
             personToUser.apply(person).stream()
                     .flatMap(user -> postToAnswer.apply(user.getPosts()).stream())
@@ -199,12 +203,12 @@ public abstract class FunctionUtil {
             personToUser.apply(people).stream()
                     .flatMap(user -> user.getPosts().stream())
                     .filter(post -> post.getPostedDate().getYear()==year)
-                    .collect(Collectors.groupingBy(post -> post.getUser().getPerson().getAddress().getCity(),Collectors.toList()))
+                    .collect(Collectors.groupingBy(post -> post.getUser().getPerson().getAddress().getCity(), toList()))
                     .entrySet().stream()
                     .sorted((p1,p2)->(int)(p1.getValue().size()-p2.getValue().size()))
                     .limit(k)
                     .map(stringListEntry -> Arrays.asList(stringListEntry.getKey(),postToQuestion.apply(stringListEntry.getValue()).stream().count(),postToAnswer.apply(stringListEntry.getValue()).stream().count()).toString())
-                    .collect(Collectors.toList());
+                    .collect(toList());
 
 
 //    public static void topKHighRatedQuestionInGivenYear(List<Question> , long, int Category ) {
