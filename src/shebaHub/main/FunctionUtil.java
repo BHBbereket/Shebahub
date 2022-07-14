@@ -131,7 +131,7 @@ public abstract class FunctionUtil {
                     .limit(k)
                     .collect(toList());
 
-    static TriFunction<List<Person>, Month,String, Optional<String>> getMostRatedAnswerGivenMonthAndCity=(person, month, city)->
+    static TriFunction<List<Person>, Month,String, Optional<String>> getQuestionWithMostRatedAnswerGivenMonthAndCity=(person, month, city)->
             personToUser.apply(person).stream()
                     .flatMap(user -> postToAnswer.apply(user.getPosts()).stream())
                     .filter(answer -> answer.getUser().getPerson().getAddress().equals(city) )
