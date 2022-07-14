@@ -97,7 +97,7 @@ public abstract class FunctionUtil {
      * JERRY
      * */
 
-    static Function<List<Person>,List<User>> personToUser=
+    public static Function<List<Person>,List<User>> personToUser=
             persons -> persons.stream()
                     .flatMap(person -> person.getRoles().stream())
                     .filter(role -> role instanceof User)
@@ -111,18 +111,18 @@ public abstract class FunctionUtil {
 //                    .map(post -> (Question)post)
 //                    .collect(Collectors.toList());
 
-    static Function<List<Post>,List<Answer>> postToAnswer=posts -> posts.stream()
+    public static Function<List<Post>,List<Answer>> postToAnswer=posts -> posts.stream()
             .filter(post -> post instanceof Answer)
             .map(post -> (Answer) post)
             .collect(toList());
 
-    static Function<List<Post>,List<Question>> postToQuestion=posts -> posts.stream()
+    public static Function<List<Post>,List<Question>> postToQuestion=posts -> posts.stream()
             .filter(post -> post instanceof Question)
             .map(post -> (Question) post)
             .collect(toList());
 
 
-    static TriFunction<List<Person>,Long,Long, List<Answer>> firstKAnswersForGivenQuestion=
+    public static TriFunction<List<Person>,Long,Long, List<Answer>> firstKAnswersForGivenQuestion=
             (person,questionId,k) -> personToUser.apply(person).stream()
                     .flatMap(user -> userToQuestion.apply(personToUser.apply(person)).stream())
                     .filter(question -> question.getPostId().equals(questionId))
@@ -131,7 +131,7 @@ public abstract class FunctionUtil {
                     .limit(k)
                     .collect(toList());
 
-    static QuadFunction<List<Person>,Long,Long,String, Optional<String>> getQuestionWithMostRatedAnswerGivenYearAndCity=(person, year,month, city)->
+    public static QuadFunction<List<Person>,Long,Long,String, Optional<String>> getQuestionWithMostRatedAnswerGivenYearAndCity=(person, year,month, city)->
             personToUser.apply(person).stream()
                     .flatMap(user -> postToAnswer.apply(user.getPosts()).stream())
                     .filter(answer -> answer.getUser().getPerson().getAddress().equals(city) )
